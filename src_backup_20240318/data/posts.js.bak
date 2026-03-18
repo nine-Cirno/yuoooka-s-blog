@@ -1,0 +1,219 @@
+// This file is auto-generated or manually maintained.
+// It acts as a database for blog posts.
+
+export const posts = [
+  {
+    id: 'Atri的Re之旅-2',
+    title: 'Atri的Re之旅(2)',
+    date: '2025-11-10 15:44:47',
+    tags: ['CTF', 'Rewp'],
+    img: '/img/default-cover.png',
+    categories: ['CTF'],
+    description: '本章我会带来Qctf-Re向的非官方WP',
+    content: `
+      <p>本章我会带来Qctf-Re向的非官方WP</p>
+      <h2>Week 1</h2>
+      <h3>test1:8086ASM</h3>
+      <p>加密核心逻辑是循环右移+异或</p>
+      <pre><code>加密核心
+ENCRYPT PROC
+    PUSH AX
+    PUSH BX
+    PUSH CX
+    MOV SI, OFFSET INPUT_BUFFER + 2
+    MOV BX, OFFSET DATA2
+    MOV CX, 35
+LOOP2:
+    PUSH CX
+    MOV CL, 2
+    MOV AL, [SI]
+    ROR AL, CL//循环右移2位
+    POP CX
+    MOV [SI], AL
+    MOV AX, WORD PTR[SI]//同时取出两个SI字节，即此次循环右移后的imput[i]和未加密的input[i+1]
+    XOR AX, WORD PTR[BX]//同上，将AX与两字节的BX异或
+    MOV WORD PTR[SI], AX
+    INC SI
+    ADD BX, 2
+    CMP BX, OFFSET DATA2 + 10
+    JNE CASE1
+    MOV BX, OFFSET DATA2 
+CASE1:
+    LOOP LOOP2
+    POP CX
+    POP BX
+    POP AX
+    RET
+ENCRYPT ENDP 
+循环右移2位的代码实现：x=(x>>2)|(x<<6)
+</code></pre>
+      <pre><code>加密脚本
+#include &lt;stdio.h&gt;
+#include &lt;stdint.h&gt;
+int main()
+{ 
+    unsigned char input[36];
+    for(int i=0;i&lt;36;i++)
+    {
+        scanf("%c",&input[i]);
+    }
+    uint16_t key[5]={0x1122, 0x3344, 0x1717, 0x9090, 0xBBCC};
+    for(int i=0;i&lt;35;i++)
+    {
+        input[i]=(input[i]&gt;&gt;2)|(input[i]&lt;&lt;6);
+        uint16_t temp=(input[i]|input[i+1]&lt;&lt;8);
+        temp^=key[i%5];
+        input[i]=temp&0xff;
+        input[i+1]=temp&gt;&gt;8;
+    }
+    for(int i=0;i&lt;36;i++)
+    {
+        printf("%#x ",input[i]);
+    }
+}
+</code></pre>
+      <p>解密脚本实际上就是加密脚本逆向</p>
+      <pre><code>#include &lt;stdio.h&gt;
+#include &lt;stdint.h&gt;
+int main()
+{ 
+    unsigned char input[36]={0xbb,0x1b,0x83,0x8c,0x36,0x19,0xcc,0x97,0x8d,0xe4,0x97,0xcc,0xc,0x48,0xe4,0x1b,0xe,0xd7,0x5b,0x65,0x1b,0x50,0x96,0x6,0x3f,0x19,0xc,0x4f,0x4e,0xf9,0x1b,0xd7,0xc,0x1d,0xa0,0xc6};
+   
+    uint16_t key[5]={0x1122, 0x3344, 0x1717, 0x9090, 0xBBCC};
+    for(int i=34;i&gt;=0;i--)
+    {
+        
+        uint16_t temp=(input[i]|input[i+1]&lt;&lt;8);
+        temp^=key[i%5];
+        input[i]=temp&0xff;
+        input[i+1]=temp&gt;&gt;8;
+        input[i]=(input[i]&lt;&lt;2)|(input[i]&gt;&gt;6);
+    }
+    for(int i=0;i&lt;36;i++)
+    {
+        printf("%c",input[i]);
+    }
+}
+</code></pre>
+      <h3>test2:PlzDebugMe</h3>
+      <p>进入ida，我们查找flag相关函数</p>
+      <p>不难看出这个为中心函数</p>
+      <p>本质是一个加密比较，逆向只要再进行一次相同加密就行了</p>
+      <p>这里我们采取动调patch的方法</p>
+      <p>patch掉wrong分支的return 0；设下如图断点</p>
+      <p><img src="/img/posts/QCTF/debug1.png" alt="debug" /></p>
+      <p>动态调试过程中将密文重新填入输入中</p>
+      <p><img src="/img/posts/QCTF/debug2.png" alt="debug" /></p>
+      <p>加密32次得到flag</p>
+      <p><img src="/img/posts/QCTF/debug3.png" alt="debug" /></p>
+      <h3>test3:ezCSharp</h3>
+      <p>dnspy打开</p>
+      <p>发现这题其实是解密完密文后与输入比对</p>
+      <p>直接动态调试获取flag即可</p>
+      <p><img src="/img/posts/QCTF/Cs1.png" alt="Cs" /></p>
+      <h3>test4:ezCalculate</h3>
+      <p>打开ida,是简单的加密和计算</p>
+      <p><img src="/img/posts/QCTF/ezc.png" alt="ezc" /></p>
+      <p>直接逆向计算即可</p>
+      <pre><code>#include &lt;stdio.h&gt;
+int main()
+{
+    unsigned char key[22] = {
+    0x77, 0x77, 0x71, 0x65, 0x73, 0x73, 0x67, 0x78, 0x73, 0x64, 0x64, 0x6B, 0x61, 0x61, 0x6F, 0x31, 
+    0x32, 0x33, 0x77, 0x6D, 0x73,0x00
+};
+    unsigned char answer[22] = {
+    0x33, 0x1D, 0x32, 0x44, 0x2A, 0x54, 0x45, 0x2C, 0x2E, 0x74, 0x8C, 0x4B, 0x40, 0x42, 0x43, 0x73, 
+    0x71, 0x82, 0x24, 0x35, 0x10, 0x00, 
+};
+    for(int i=0;i&lt;21;i++)
+    {
+        answer[i]+=key[i];
+    }
+    for(int i=0;i&lt;21;i++)
+    {
+        
+        answer[i]=answer[i]^key[i];
+    }
+    
+    for(int i=0;i&lt;21;i++)
+    {
+        answer[i]-=key[i];
+    }
+    printf("%s",answer);
+    
+}
+</code></pre>
+      <pre><code>flag{Add_X0r_and_Sub}
+</code></pre>
+      <h3>test5:jvav</h3>
+      <p>发现文件是apk格式，使用工具jadx，根据题目提示，我们发现EncKt</p>
+      <p><img src="/img/posts/QCTF/jvav1.png" alt="jvav" /></p>
+      <p>对明文主要处理为这一步</p>
+      <p><img src="/img/posts/QCTF/jvav2.png" alt="jvav" /></p>
+      <p>分别为：base64加密，相加异或取反，右移六位</p>
+      <p>从外往里逆向计算即可</p>
+      <pre><code>#include &lt;stdio.h&gt;
+int main()
+{
+    short enc[]={-89, 96, 102, 118, -89, -122, 103, -103, -125, -95, 114, 117, -116, -102, 114, -115, -125, 108, 110, 118, -91, -83, 101, -115, -116, -114, 124, 114, -123, -87, -87, -114, 121, 108, 124, -114};
+    short flag[36];
+    for(int i=0;i&lt;36;i++)
+    {
+        flag[i]=enc[(i+31)%36];
+    }
+    for(int i=0;i&lt;36;i++)
+    {
+        flag[i]=((~flag[i])^11)-32;
+    }
+    for(int i=0;i&lt;36;i++)
+    printf("%c",flag[i]);
+}
+</code></pre>
+      <pre><code>ZmxhZ3trb3RsMW5faXNfYWxzb19qYXZhfQ==
+flag{kotl1n_is_also_java}
+</code></pre>
+      <h3>test6:rand</h3>
+      <p>观察到rand函数，我们可以留心找一下srand函数（用于生成伪随机数）</p>
+      <p><img src="/img/posts/QCTF/rand1.png" alt="rand" /></p>
+      <pre><code>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+void swap(char *a,char *b)
+{
+    char temp=*a;
+    *a=*b;
+    *b=temp;
+}
+int main()
+{
+    int rands[1000];
+    srand(12345);
+    unsigned char enc[27] = {
+    0x5A, 0x66, 0x86, 0xCE, 0x46, 0x23, 0x75, 0x30, 0x18, 0x6F, 0x5B, 0x7D, 0x4D, 0x4F, 0xF7, 0xC4, 
+    0x4A, 0x0D, 0x45, 0xAE, 0x36, 0xEF, 0x6B, 0x81, 0xC1, 0x82, 0x03};
+    for (int i = 0; i &lt; 256 * 2 + 27; i++) 
+    {
+    rands[i] = rand();
+    printf("%d\n", rands[i]);
+    }//获取一共用到的srand,前256*2个数用于交换,后27个数用于异或
+    for (int i = 0; i &lt; 27; i++) 
+    {
+    enc[i] ^= rands[512 + i] & 0xFF;
+    }//从下往上解，先异或
+    for (int i = 256 * 2 - 1; i&gt;=0; i -= 2) {
+    int z1 = rands[i] % 27;
+    int z2 = rands[i - 1] % 27;
+    swap(&enc[z1], &enc[z2]);
+    }//从后往前交换，原程序中swap步骤是rand[0]到rand[256*2-1],这里为了恢复，应该从rand[256*2-1]开始逆交换
+    for (int i = 0; i &lt; 27; i++)
+    printf("%c", enc[i]);
+    }
+</code></pre>
+      <p>注：文件为linux下程序，应在linux下编译并执行，不然srand有误</p>
+      <pre><code>flag{there_1s_s0_many_rand}
+</code></pre>
+      <h2>Week 2</h2>
+      <h3>test1:CPPReverse</h3>
+    `
+  }
+];
