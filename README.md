@@ -1,19 +1,27 @@
 # leleo-home-page 个人主页
 
 ## 目录
-- [项目简介](#项目简介)
-- [功能特性](#功能特性)  
-- [演示地址](#演示地址)
-- [技术栈](#技术栈)
-- [安装与运行](#安装与运行)
-  - [本地运行](#本地运行)
-  - [Vercel在线部署](#vercel在线部署)
-  - [CloudFlare Pages 在线部署](#cloudflare-pages-在线部署)
-- [修改配置](#修改配置)
+- [leleo-home-page 个人主页](#leleo-home-page-个人主页)
+  - [目录](#目录)
+  - [项目简介](#项目简介)
+  - [功能特性](#功能特性)
+  - [演示地址](#演示地址)
+  - [技术栈](#技术栈)
+  - [安装与运行](#安装与运行)
+    - [本地运行](#本地运行)
+    - [Vercel在线部署](#vercel在线部署)
+    - [CloudFlare Pages 在线部署](#cloudflare-pages-在线部署)
+  - [修改配置](#修改配置)
+    - [方法1. 修改配置文件](#方法1-修改配置文件)
+    - [方法2. 在线修改环境变量](#方法2-在线修改环境变量)
+      - [vercel部署](#vercel部署)
+      - [CloudFlare部署](#cloudflare部署)
 
 
 ## 项目简介
 
+
+项目来源：https://github.com/leleo886/leleo-home-page，非常感谢 leleo 的开源贡献！
 这是一个简单的个人主页项目，用于展示个人信息、技能、项目等。主页设计简洁、响应式，适合在不同设备上浏览。支持自定义配置。
 
 <img src="./img/leleo-home-page/1737532219807.png" width="600" alt="桌面端预览" style="display: block; margin: 10px auto;border-radius:8px;">
