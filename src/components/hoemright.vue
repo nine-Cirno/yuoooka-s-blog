@@ -183,10 +183,13 @@ export default {
 			const query = this.searchQuery.toLowerCase().trim();
 			if (!query) return [];
 			
-			return this.posts.filter(post => 
-				post.title.toLowerCase().includes(query) || 
-				post.description.toLowerCase().includes(query)
-			).slice(0, 5); // Limit to top 5
+			return this.posts.filter(post => {
+				const titleMatch = post.title.toLowerCase().includes(query);
+				const descMatch = post.description.toLowerCase().includes(query);
+				const contentMatch = post.content && post.content.replace(/<[^>]*>/g, '').toLowerCase().includes(query);
+				
+				return titleMatch || descMatch || contentMatch;
+			}).slice(0, 5); // Limit to top 5
 		},
 		isUrl(){
 			const str = this.searchQuery.trim();

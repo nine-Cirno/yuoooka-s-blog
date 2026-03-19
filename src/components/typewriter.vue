@@ -32,8 +32,8 @@ onMounted(() => {
 .msg, .qm{
     color: #ffffff !important;
     letter-spacing: 2px;
-    font-family: 'Noto Sans SC', sans-serif !important;
-    font-size: 25px;
+    font-family: 'LXGW WenKai Screen', sans-serif !important;
+    font-size: 1.6rem;
     font-weight: bold;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.95) !important; /* 清晰阴影 */
 }
@@ -46,7 +46,7 @@ onMounted(() => {
 }
 @media screen and (min-width: 960px) and (max-width: 1200px)  {
     .msg, .qm{
-        font-size: 20px;
+        font-size: 1.25rem;
     }
 }
 @media (max-width: 960px){
@@ -54,7 +54,7 @@ onMounted(() => {
         min-height: 76px;   
     }
     .msg, .qm{
-        font-size: 16px;
+        font-size: 1rem;
     }
 }
 </style>

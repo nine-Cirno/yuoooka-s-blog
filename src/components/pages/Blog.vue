@@ -366,21 +366,21 @@ export default {
   border-bottom: 1px solid rgba(255,255,255,0.3);
   color: white !important;
   text-shadow: 0 1px 2px rgba(0,0,0,0.95);
-  font-family: 'Noto Sans SC', sans-serif !important;
+  font-family: 'LXGW WenKai Screen', sans-serif !important;
 }
 .blog-content h3 {
   margin-top: 1.5rem;
   margin-bottom: 0.5rem;
   color: white !important;
   text-shadow: 0 1px 2px rgba(0,0,0,0.95);
-  font-family: 'Noto Sans SC', sans-serif !important;
+  font-family: 'LXGW WenKai Screen', sans-serif !important;
 }
 .blog-content p {
   margin-bottom: 1rem;
   line-height: 1.8;
   color: white !important;
   text-shadow: 0 1px 2px rgba(0,0,0,0.95);
-  font-family: 'Noto Sans SC', sans-serif !important;
+  font-family: 'LXGW WenKai Screen', sans-serif !important;
 }
 .text-truncate-multiline {
   display: -webkit-box;
@@ -409,8 +409,8 @@ export default {
 }
 
 .code-title {
-  font-family: 'Consolas', 'Monaco', monospace;
-  font-weight: bold;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-weight: 500;
   color: #e0e0e0 !important;
   font-size: 0.9rem;
   text-shadow: none !important; /* Remove global ghosting */
@@ -431,6 +431,7 @@ export default {
   color: #e0e0e0 !important;
   transition: all 0.2s;
   text-shadow: none !important;
+  font-family: 'JetBrains Mono', monospace !important;
 }
 
 .code-btn:hover {
@@ -450,7 +451,9 @@ export default {
   overflow-x: auto;
   color: #d4d4d4 !important; /* VS Code default light text */
   text-shadow: none !important; /* CRITICAL: Remove blur/ghosting */
-  font-family: 'Consolas', 'Monaco', 'Courier New', monospace !important;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace !important;
+  font-size: 0.95rem;
+  line-height: 1.6;
 }
 
 /* Ensure code text inside is clean */
@@ -470,12 +473,18 @@ export default {
   overflow-x: auto;
   margin: 1rem 0;
   text-shadow: none !important;
-  font-family: 'Consolas', 'Monaco', 'Courier New', monospace !important;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace !important;
   border: 1px solid rgba(255,255,255,0.1);
+  font-size: 0.95rem;
+  line-height: 1.6;
 }
 
 .blog-content code {
-  font-family: 'Consolas', 'Monaco', 'Courier New', monospace !important;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace !important;
   text-shadow: none !important;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  font-size: 0.9em;
 }
 </style>

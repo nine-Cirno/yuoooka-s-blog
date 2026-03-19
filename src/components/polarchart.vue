@@ -66,7 +66,7 @@ export default {
       
       // Set default font color to white for this chart
       Chart.defaults.color = '#ffffff';
-      Chart.defaults.font.family = "'Noto Sans SC', sans-serif";
+      Chart.defaults.font.family = "'LXGW WenKai Screen', sans-serif";
 
       this.chartInstance = new Chart(ctx, {
         type: 'polarArea',
@@ -100,12 +100,12 @@ export default {
               boxHeight: 12,
               displayColors: true,
               titleFont: {
-                family: "'Noto Sans SC', sans-serif",
+                family: "'LXGW WenKai Screen', sans-serif",
                 size: 14,
                 weight: 'bold'
               },
               bodyFont: {
-                family: "'Noto Sans SC', sans-serif",
+                family: "'LXGW WenKai Screen', sans-serif",
                 size: 13
               },
               callbacks: {
@@ -137,7 +137,7 @@ export default {
               pointLabels: {
                 color: '#ffffff',
                 font: {
-                  family: "'Noto Sans SC', sans-serif",
+                  family: "'LXGW WenKai Screen', sans-serif",
                   size: 11
                 }
               }

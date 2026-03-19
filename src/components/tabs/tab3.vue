@@ -32,7 +32,7 @@
             
 
             <span 
-            :style="xs?{'font-size':'10px'}:{'font-size':'12px'}" 
+            :style="xs?{'font-size':'0.6rem'}:{'font-size':'0.75rem'}" 
             style="color:white;"
             >{{ formatTime(currentTime) }} / {{ formatTime(duration) }}</span>
             <!-- 控制区 -->
@@ -42,11 +42,11 @@
           <div class="lyrics-container ml-1">
               <div class="lyrics"
                   v-if="currentLyric"
-                  :style="xs?{'font-size':'10px'}:{'font-size':'13px'}">{{ currentLyric }}
+                  :style="xs?{'font-size':'0.6rem'}:{'font-size':'0.8rem'}">{{ currentLyric }}
               </div>
               <div>
-                  <span :style="xs?{'font-size':'10px'}:{'font-size':'14px'}" style="opacity: 0.7;">{{ currentSong.title }}</span>
-                  <span :style="xs?{'font-size':'10px'}:{'font-size':'12px'}" style="opacity: 0.7;"> - - {{ currentSong.author }}</span>
+                  <span :style="xs?{'font-size':'0.6rem'}:{'font-size':'0.9rem'}" style="opacity: 0.7;">{{ currentSong.title }}</span>
+                  <span :style="xs?{'font-size':'0.6rem'}:{'font-size':'0.75rem'}" style="opacity: 0.7;"> - - {{ currentSong.author }}</span>
               </div>
           </div>
       </div>
@@ -66,7 +66,7 @@
               <span style="margin-right: 12px;">{{ index+1 }}</span>
               <span>{{ song.title }}</span>
             </v-list-item-title>
-            <span style="font-size: 12px; color: rgba(255,255,255,0.7);">{{ song.author }}</span>
+            <span style="font-size: 0.75rem; color: rgba(255,255,255,0.7);">{{ song.author }}</span>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -309,7 +309,7 @@ export default {
 }
 
 .v-list-item-title {
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 
 /* 当前播放的歌曲高亮 */

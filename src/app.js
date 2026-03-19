@@ -7,6 +7,7 @@ import tab2 from './components/tabs/tab2.vue';
 import tab3 from './components/tabs/tab3.vue';
 import loader from './components/loader.vue';
 import polarchart from './components/polarchart.vue';
+import ContextMenu from './components/ContextMenu.vue';
 
 // Dynamic Import for Route-Level Code Splitting (Performance Optimization)
 const BlogPage = defineAsyncComponent(() => import('./components/pages/Blog.vue'));
@@ -25,7 +26,7 @@ import { useDisplay } from 'vuetify'
 
 export default {
   components: {
-    tab1,tab2,tab3,loader,homeright,typewriter,polarchart,
+    tab1,tab2,tab3,loader,homeright,typewriter,polarchart,ContextMenu,
     BlogPage, TagsPage, ArchivesPage, LinksPage, SkillsPage, SeriesPage, GuestbookPage, AboutPage
   },
   setup() {
@@ -42,6 +43,10 @@ export default {
       configdata: config,
       dialog1: false,
       dialog2: false,
+      contextMenuVisible: false,
+      contextMenuX: 0,
+      contextMenuY: 0,
+      selectedText: '',
       personalizedtags: null,
       videosrc: '',
       ismusicplayer: false,
@@ -262,11 +267,17 @@ export default {
         root.style.setProperty('--leleo-vcard-color', `${leleodata.color.themecolor}`);
         root.style.setProperty('--leleo-brightness', `${leleodata.brightness}%`);
         root.style.setProperty('--leleo-blur', `${leleodata.blur}px`); 
+        if (leleodata.fontSizeScale) {
+             root.style.fontSize = `${leleodata.fontSizeScale}%`;
+        } else {
+             root.style.fontSize = '100%';
+        }
       }else{
         root.style.setProperty('--leleo-welcomtitle-color', `${this.configdata.color.welcometitlecolor}`);
         root.style.setProperty('--leleo-vcard-color', `${this.configdata.color.themecolor}`);  
         root.style.setProperty('--leleo-brightness', `${this.configdata.brightness}%`);  
         root.style.setProperty('--leleo-blur', `${this.configdata.blur}px`);
+        root.style.fontSize = '100%';
       }
   
       let leleodatabackground = this.getCookie("leleodatabackground");
@@ -398,32 +409,56 @@ export default {
     collapseSwitch() {
       this.isExpanded = false;
     },
-    navigate(viewName, tag = null, skill = null, postId = null) {
+    navigate(viewName, tag = null, skill = null, postId = null, searchQuery = '') {
       this.currentView = viewName;
       this.selectedTag = tag;
       this.selectedSkill = skill;
       this.selectedPostId = postId;
+      this.initialSearchQuery = searchQuery;
     },
     handleTagSelected(tag) {
       this.navigate('blog', tag);
     },
     handleSkillNavigation(skill) {
-      this.selectedSkill = skill;
-      this.selectedTag = null;
-      this.initialSearchQuery = '';
-      this.selectedPostId = null;
       this.navigate('blog', null, skill);
     },
     handleBlogSearch(query) {
-      this.initialSearchQuery = query;
-      this.selectedTag = null;
-      this.selectedSkill = null;
-      this.selectedPostId = null;
-      this.navigate('blog');
+      this.navigate('blog', null, null, null, query);
     },
     handlePostNavigation(postId) {
-      this.initialSearchQuery = '';
       this.navigate('blog', null, null, postId);
+    },
+    showContextMenu(e) {
+      e.preventDefault();
+      
+      // Capture selection immediately
+      const selection = window.getSelection();
+      this.selectedText = selection ? selection.toString() : '';
+
+      this.contextMenuVisible = false; // Close first to reset transition if needed
+      this.$nextTick(() => {
+        this.contextMenuX = e.clientX;
+        this.contextMenuY = e.clientY;
+        this.contextMenuVisible = true;
+      });
+    },
+    closeContextMenu() {
+      this.contextMenuVisible = false;
+    },
+    handleContextMenuAction(action) {
+      if (action === 'copy') {
+        if (this.selectedText && this.selectedText.length > 0) {
+            navigator.clipboard.writeText(this.selectedText).then(() => {
+                // Could show a snackbar here
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+            });
+        }
+      } else if (action === 'home') {
+        this.navigate('home');
+      } else if (action === 'settings') {
+        this.dialog1 = true;
+      }
     }
   }
 };

@@ -1,6 +1,7 @@
 <template>
   <v-app class="vapp-fullscreen-background" style="overflow: hidden;" :class="{ 'radius-before': !xs }"
-  :style="xs?{height: '100%',width: '100%',top: '0',left:'0'}:(sm?{height: '98%',width: '98%',top: '1%',left:' 1%'}:{height: '96.6%',width: '99%',top: '1.7%',left:' 0.5%'})">
+  :style="xs?{height: '100%',width: '100%',top: '0',left:'0'}:(sm?{height: '98%',width: '98%',top: '1%',left:' 1%'}:{height: '96.6%',width: '99%',top: '1.7%',left:' 0.5%'})"
+  @contextmenu.prevent="showContextMenu" @click="closeContextMenu">
     <transition name="fade">
       <div class="loading" v-show="isloading">
         <loader></loader>
@@ -262,6 +263,14 @@
           </div>
         </v-card>
     </v-dialog>
+    <context-menu
+      :visible="contextMenuVisible"
+      :x="contextMenuX"
+      :y="contextMenuY"
+      :has-selection="selectedText && selectedText.length > 0"
+      @close="closeContextMenu"
+      @action="handleContextMenuAction"
+    ></context-menu>
   </v-app>
 </template>
 
@@ -295,7 +304,7 @@
   transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
   
   /* 关键：定位用于光效层 */
-  position: relative !important;
+  position: relative;
   overflow: hidden !important;
   
   color: #ffffff !important;
@@ -347,14 +356,14 @@
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.95);
   font-weight: 500;
   letter-spacing: 0.5px;
-  font-family: 'Noto Sans SC', sans-serif !important; /* 使用免费商用字体 Noto Sans SC */
+  font-family: 'LXGW WenKai Screen', sans-serif !important; 
 }
 
 /* 强制应用到所有 Vuetify 文本元素及自定义类 */
 .v-application, .v-card-title, .v-card-subtitle, .v-card-text, .v-btn, .v-icon, .text-h4, .text-h5, .text-h6, .v-list-item-title, .v-list-item-subtitle, .leleo-left-welcome, .clock-font {
   color: #ffffff !important;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.95) !important; /* 统一改为清晰阴影 */
-  font-family: 'Noto Sans SC', sans-serif !important;
+  font-family: 'LXGW WenKai Screen', sans-serif !important;
 }
 
 /* 输入框特殊处理 */
@@ -369,12 +378,12 @@
 .v-field__input {
     color: white !important;
     text-shadow: 0 1px 2px rgba(0,0,0,0.9) !important; /* 清晰阴影 */
-    font-family: 'Noto Sans SC', sans-serif !important;
+    font-family: 'LXGW WenKai Screen', sans-serif !important;
 }
 .v-label {
     color: rgba(255,255,255,0.9) !important;
     text-shadow: 0 1px 2px rgba(0,0,0,0.9) !important; /* 清晰阴影 */
-    font-family: 'Noto Sans SC', sans-serif !important;
+    font-family: 'LXGW WenKai Screen', sans-serif !important;
 }
 
 /* 极坐标图提升 */

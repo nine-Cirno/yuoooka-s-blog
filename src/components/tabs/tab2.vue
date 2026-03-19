@@ -22,7 +22,7 @@
                     <v-radio-group v-model="radios" inline>
                         <template v-slot:label>
                             <div class="mb-2 d-flex justify-space-between" style="width: 100%;align-items: center;">
-                                <div class="itemText"><strong :style="smAndDown?{'font-size':'13px'}:{}">{{ radios.title }}</strong></div>
+                                <div class="itemText"><strong :style="smAndDown?{'font-size':'0.8rem'}:{}">{{ radios.title }}</strong></div>
                                 <v-menu location="bottom" :offset="[0, 15]">
                                     <template v-slot:activator="{ props }">
                                         <v-btn variant="tonal"
@@ -80,7 +80,7 @@
                     <v-radio-group v-model="radios" inline>
                         <template v-slot:label>
                             <div class="mb-2 d-flex justify-space-between" style="width: 100%;align-items: center;">
-                                <div class="itemText"><strong :style="smAndDown?{'font-size':'13px'}:{}">{{ radios.title }}</strong></div>
+                                <div class="itemText"><strong :style="smAndDown?{'font-size':'0.8rem'}:{}">{{ radios.title }}</strong></div>
                                 <v-menu location="bottom" :offset="[0, 15]">
                                     <template v-slot:activator="{ props }">
                                         <v-btn variant="tonal" :density="smAndDown?'compact':'default'"
@@ -132,7 +132,7 @@
             </v-tabs-window-item>
           </template>
         </v-tabs>
-         <div style="text-align: center;font-size: 12px;"><span>不同壁纸在相应设备下响应</span></div>
+         <div style="text-align: center;font-size: 0.75rem;"><span>不同壁纸在相应设备下响应</span></div>
     </v-container>
     <div class="d-flex justify-center mt-3">
         <v-btn :loading="loading1" variant="tonal" class="ma-2" @click="redefault()">恢复</v-btn>

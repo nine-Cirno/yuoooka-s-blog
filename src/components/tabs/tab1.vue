@@ -38,6 +38,18 @@
                 v-model="blur"
                 thumb-label="always"
             ></v-slider>
+
+            <v-slider
+                class="ml-5 mr-8"
+                label="字体大小(%)"
+                color="white"
+                :max="150"
+                :min="80"
+                :thumb-size="xs?15:18"
+                :step="5"
+                v-model="fontSizeScale"
+                thumb-label="always"
+            ></v-slider>
             
             <div style="display: flex;justify-content: center;align-items: center;">
                 <v-btn :loading="loading1" variant="tonal" class="ma-2" @click="redefault()">恢复</v-btn>
@@ -103,6 +115,7 @@ export default {
         },
         brightness: 78,
         blur: 0,
+        fontSizeScale: 100,
         selectcolor: "themecolor",
         colordialog: false,
         mode: 'hex',
@@ -118,10 +131,12 @@ export default {
         this.color = leleodata.color;
         this.brightness = leleodata.brightness;
         this.blur = leleodata.blur;
+        this.fontSizeScale = leleodata.fontSizeScale || 100;
     }else{
         this.color = this.configdata.color;
         this.brightness = this.configdata.brightness;
         this.blur = this.configdata.blur;
+        this.fontSizeScale = 100;
     }
   },
   methods: {
@@ -133,7 +148,7 @@ export default {
         setTimeout(() => {
             this.loading = false;
             // 注意数字String格式化
-            this.setCookie('leleodata', {color:this.color,brightness:String(this.brightness),blur:String(this.blur),backgroundblur:String(this.backgroundblur)},0.005);
+            this.setCookie('leleodata', {color:this.color,brightness:String(this.brightness),blur:String(this.blur),fontSizeScale:String(this.fontSizeScale),backgroundblur:String(this.backgroundblur)},0.005);
             location.reload();
         }, 800)   
     },
