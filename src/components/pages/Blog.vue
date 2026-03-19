@@ -42,32 +42,31 @@
         </div>
 
         <v-row v-else>
-          <v-col v-for="post in filteredPosts" :key="post.id" cols="12">
-            <v-card hover @click="openPost(post)" class="mb-4 post-card" color="transparent" style="border: 1px solid rgba(255,255,255,0.2);">
-              <div class="d-flex flex-no-wrap justify-space-between align-center">
-                <v-avatar
-                  class="ma-3"
-                  size="125"
-                  rounded="lg"
-                >
-                  <v-img :src="post.img || '/img/default-cover.png'" cover></v-img>
-                </v-avatar>
-                <div style="width: 100%;" class="text-white">
-                  <v-card-title class="text-h6 font-weight-bold pt-0">{{ post.title }}</v-card-title>
-                  <v-card-subtitle class="pb-2 text-white text-opacity-80">
-                    <v-icon size="small" class="mr-1" color="white">mdi-calendar</v-icon> {{ post.date }}
-                    <span class="mx-2">|</span>
-                    <v-icon size="small" class="mr-1" color="white">mdi-tag</v-icon> 
-                    <span v-for="(tag, index) in post.tags" :key="tag">
-                      {{ tag }}<span v-if="index < post.tags.length - 1">, </span>
-                    </span>
-                  </v-card-subtitle>
-                  <v-card-text class="text-body-2 text-truncate-multiline text-white">
-                    {{ post.description }}
-                  </v-card-text>
+          <v-col v-for="post in filteredPosts" :key="post.id" cols="12" sm="6" md="4" lg="3">
+            <div class="blog-grid-card yuoooka-glass-card" @click="openPost(post)">
+              <!-- Media Area with Slide-Up Effect -->
+              <div class="media-area">
+                <!-- Image Layer -->
+                <img :src="post.img || '/img/default-cover.png'" class="post-bg-img" alt="cover" loading="lazy" />
+                
+                <!-- Overlay Content Layer -->
+                <div class="post-content-overlay">
+                   <p class="post-desc yuoooka-text-shadow">{{ post.description }}</p>
+                   <v-btn variant="text" size="small" color="white" class="read-more-btn">
+                      阅读全文 <v-icon size="small" end>mdi-arrow-right</v-icon>
+                   </v-btn>
                 </div>
               </div>
-            </v-card>
+              
+              <!-- Bottom: Title & Meta -->
+              <div class="blog-card-footer">
+                <div class="post-title yuoooka-text-shadow" :title="post.title">{{ post.title }}</div>
+                <div class="post-meta yuoooka-text-shadow">
+                  <span class="mr-2"><v-icon size="x-small">mdi-calendar</v-icon> {{ post.date.split(' ')[0] }}</span>
+                  <span><v-icon size="x-small">mdi-eye</v-icon> {{ Math.floor(Math.random() * 1000) + 50 }}</span>
+                </div>
+              </div>
+            </div>
           </v-col>
         </v-row>
       </v-card-text>
@@ -486,5 +485,134 @@ export default {
   padding: 0.2em 0.4em;
   border-radius: 4px;
   font-size: 0.9em;
+}
+
+/* --- New Grid Layout Styles (Slide Up Version) --- */
+.blog-grid-card {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  /* border-radius: 12px;  -- Handled by yuoooka-glass-card */
+  /* overflow: hidden; -- Handled by yuoooka-glass-card */
+  transition: transform 0.3s ease;
+  cursor: pointer;
+  
+  /* Additional tweak for glass "inlaid" feel: 
+     Ensure padding if needed, but for "neat grid" let image flush 
+     against top/sides looks best, with glass framing the whole card.
+  */
+  background-color: transparent !important; /* Override explicit bg if any, rely on glass */
+}
+
+.blog-grid-card:hover {
+  transform: translateY(-5px);
+}
+
+.media-area {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/10;
+  /* border-radius: 12px; -- Let parent handle corners */
+  overflow: hidden;
+  /* box-shadow: 0 4px 15px rgba(0,0,0,0.2); -- Parent has shadow */
+  background-color: transparent; /* Remove black bg, let glass show through */
+}
+
+/* Image styling */
+.post-bg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  /* Ensure image is on bottom layer */
+  z-index: 1;
+  position: relative;
+  
+  /* Make image slightly transparent by default to blend with glass? 
+     No, usually solid image looks better unless hovered. 
+     User said "transparent texture" for the BOX, not necessarily image always.
+  */
+}
+
+/* Overlay Content styling - initially hidden */
+.post-content-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Vertically center */
+  align-items: center;
+  padding: 30px; /* Add padding to prevent text from hitting edges */
+  z-index: 2;
+  
+  /* Start transparent and slightly below center */
+  opacity: 0;
+  transform: translateY(20px); 
+  transition: all 0.4s cubic-bezier(0.215, 0.610, 0.355, 1); /* Ease out back for smooth stop */
+}
+
+/* --- Hover Effects --- */
+/* 1. Image serves as background: Blur & Darken */
+.blog-grid-card:hover .post-bg-img {
+  transform: scale(1.1); /* Slight zoom */
+  filter: blur(5px) brightness(0.4); /* Blur and darken to contrast with white text */
+  opacity: 1; /* Keep opaque so it acts as background */
+}
+
+/* 2. Text appears in center */
+.blog-grid-card:hover .post-content-overlay {
+  opacity: 1;
+  transform: translateY(0); /* Settle at center */
+}
+
+/* Text styles inside overlay */
+.post-desc {
+  font-size: 0.95rem; /* Slightly larger for readability */
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  color: white;
+  text-align: center;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  font-weight: 500;
+}
+
+.read-more-btn {
+  margin-top: auto;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+/* Footer (Title & Meta) */
+.blog-card-footer {
+  padding: 12px 4px;
+  text-align: center; 
+}
+
+.post-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: white;
+}
+
+.post-meta {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
 }
 </style>

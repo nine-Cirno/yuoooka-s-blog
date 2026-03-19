@@ -122,7 +122,7 @@
         <links-page v-else-if="currentView === 'links'" key="links" @back="navigate('home')"></links-page>
         <skills-page v-else-if="currentView === 'skills'" key="skills" @back="navigate('home')" @navigate-post="handlePostNavigation" @navigate-skill="handleSkillNavigation"></skills-page>
         <series-page v-else-if="currentView === 'series'" key="series" @back="navigate('home')" @navigate-post="handlePostNavigation"></series-page>
-        <guestbook-page v-else-if="currentView === 'guestbook'" key="guestbook" @back="navigate('home')"></guestbook-page>
+        <daily-page v-else-if="currentView === 'daily'" key="daily" @back="navigate('home')"></daily-page>
         <about-page v-else-if="currentView === 'about'" key="about" @back="navigate('home')"></about-page>
     </transition>
     </div>

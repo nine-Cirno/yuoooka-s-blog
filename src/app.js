@@ -16,7 +16,7 @@ const ArchivesPage = defineAsyncComponent(() => import('./components/pages/Archi
 const LinksPage = defineAsyncComponent(() => import('./components/pages/Links.vue'));
 const SkillsPage = defineAsyncComponent(() => import('./components/pages/Skills.vue'));
 const SeriesPage = defineAsyncComponent(() => import('./components/pages/Series.vue'));
-const GuestbookPage = defineAsyncComponent(() => import('./components/pages/Guestbook.vue'));
+const DailyPage = defineAsyncComponent(() => import('./components/pages/Daily.vue'));
 const AboutPage = defineAsyncComponent(() => import('./components/pages/About.vue'));
 
 import config from './config.js';
@@ -27,7 +27,7 @@ import { useDisplay } from 'vuetify'
 export default {
   components: {
     tab1,tab2,tab3,loader,homeright,typewriter,polarchart,ContextMenu,
-    BlogPage, TagsPage, ArchivesPage, LinksPage, SkillsPage, SeriesPage, GuestbookPage, AboutPage
+    BlogPage, TagsPage, ArchivesPage, LinksPage, SkillsPage, SeriesPage, DailyPage, AboutPage
   },
   setup() {
     const { xs,sm,md } = useDisplay();
